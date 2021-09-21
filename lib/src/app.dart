@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:synonym_valley/src/About/About.dart';
 import 'package:synonym_valley/src/colorcustomisation_nav/colorcustomisation_nav.dart';
 // import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
@@ -7,6 +8,7 @@ import 'package:synonym_valley/src/normal_nav/normal_nav.dart';
 
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
@@ -75,9 +77,32 @@ class MyApp extends StatelessWidget {
                     return const ColorCustomisation();
                   case NormalNav.routeName:
                     return const NormalNav();
+                  case About.routeName:
+                    return const About();
                   case Home.routeName:
                   default:
-                    return const Home();
+                    return FutureBuilder(
+                          future: SharedPreferences.getInstance(),
+                          builder:
+                          (BuildContext context, AsyncSnapshot<SharedPreferences> prefs) {
+                            // print('----------------------------');
+                            // print(prefs.data);
+                            if (prefs.data != null) {
+                              String? route = prefs.data!.getString('navigation');
+                              if (route !=null) {
+                                switch (route) {
+                                  case ColorCustomisation.routeName:
+                                    return const ColorCustomisation();
+                                  case NormalNav.routeName:
+                                    return const NormalNav(); 
+                                  default:
+                                   return const Home();
+                                }
+                              }
+                            }
+                            return const Home();
+                          }
+                          );
                 }
               },
             );

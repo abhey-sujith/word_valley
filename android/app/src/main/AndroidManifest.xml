@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.synonym_valley">
+    <uses-permission android:name="string"/>
    <application
-        android:label="synonym_valley"
+        android:label="Synonym Valley"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

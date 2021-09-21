@@ -52,6 +52,7 @@ Color DetailsDefColor = Color(0xff1b58aa);
 Color DetailsExampleColor = Color(0xffc58a0e);
 
 Color avatarBackgroundColor = Colors.redAccent;
+Color theTextColor = Colors.white;
 
   void changeColor(Color color) => {
     setState(() => currentColor = color),
@@ -89,17 +90,16 @@ Color avatarBackgroundColor = Colors.redAccent;
             setState(() => avatarBackgroundColor = color),
             _setColor("avatarBackgroundColor",color.value)
             };
+             void changetheTextColor(Color color) => {
+            setState(() => theTextColor = color),
+            _setColor("theTextColor",color.value)
+            };
 
-Future<void> copyToClipboard(String input) async {
-    late String textToCopy;
-    final hex = input.toUpperCase();
-    if (hex.startsWith('FF') && hex.length == 8) {
-      textToCopy = hex.replaceFirst('FF', '');
-    } else {
-      textToCopy = hex;
-    }
-    await Clipboard.setData(ClipboardData(text: '#$textToCopy'));
-  }
+_setNavLocalStorage(value) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('navigation', value);
+}
+
   // Fetch content from the json file
   Future<void> readJson() async {
     final String a = await rootBundle.loadString('assets/data/a.json');
@@ -176,7 +176,8 @@ Future<void> copyToClipboard(String input) async {
     int? DSC = prefs.getInt("DetailsSpeechColor");
     int? DDC = prefs.getInt("DetailsDefColor");
     int? DEC = prefs.getInt("DetailsExampleColor");
-     int? aBC = prefs.getInt("avatarBackgroundColor");
+    int? aBC = prefs.getInt("avatarBackgroundColor");
+    int? TC = prefs.getInt("theTextColor");
 
      currentColor = cC != null?Color(cC):Color(0xff282832);
      cardbackgroundLeft = cbL != null?Color(cbL):Color(0xffffad42);
@@ -187,6 +188,7 @@ Future<void> copyToClipboard(String input) async {
      DetailsDefColor = DDC != null?Color(DDC):Color(0xff1b58aa);
      DetailsExampleColor = DEC != null?Color(DEC):Color(0xffc58a0e);
      avatarBackgroundColor = aBC != null?Color(aBC):Colors.redAccent;
+     theTextColor = TC != null?Color(TC):Colors.white;
     // int counter = (prefs.getInt('counter') ?? 0) + 1;
     // await prefs.setInt('counter', counter);
   }
@@ -203,6 +205,7 @@ Future<void> copyToClipboard(String input) async {
     readJson();
     _getColor();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -236,8 +239,9 @@ Future<void> copyToClipboard(String input) async {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: GestureDetector(
-                                        onTap: () {
-                                           Navigator.restorablePushNamed(context, Home.routeName);
+                                        onTap: () async {
+                                          await _setNavLocalStorage(Home.routeName);
+                                           Navigator.restorablePushReplacementNamed(context, Home.routeName);
                                             },
                                             onDoubleTap: (){
                                               setState(() {
@@ -263,10 +267,10 @@ Future<void> copyToClipboard(String input) async {
                                       ),
                                     ),
                                              IconButton(
-                                            icon: const Icon(Icons.edit),
+                                            icon: Icon(Icons.edit,color: theTextColor,),
                                             tooltip: 'Press to open or close the edit color buttons',
                                             onPressed: () {
-                                              final snackBar = SnackBar(content: Text('Press Again To Refresh And Scroll',style:TextStyle(color: Colors.white)),backgroundColor: Color(0xff282832),);
+                                              final snackBar = SnackBar(content: Text('Press Again To Refresh And Scroll',style:TextStyle(color: Colors.black)),backgroundColor: Color(0xffffffff),);
                                               // Navigate to the settings page. If the user leaves and returns
                                               // to the app after it has been killed while running in the
                                               // background, the navigation stack is restored.
@@ -309,11 +313,11 @@ Future<void> copyToClipboard(String input) async {
 
                                       if(_edit)    Column(
                                         children: [
-                                          Text('Long Press Buttons To See Tooltip'),
+                                          Text('Long Press Buttons To See Tooltip',style: TextStyle(color: theTextColor),),
                                           Wrap(
                                             children: [
                                               IconButton(
-                                                  icon: const Icon(Icons.edit,size: 25,),
+                                                  icon: Icon(Icons.edit,size: 25,color: theTextColor,),
                                                   alignment: Alignment.bottomRight,
                                                   tooltip: "Change background Color",
                                                   onPressed: () {
@@ -353,7 +357,7 @@ Future<void> copyToClipboard(String input) async {
                                                 },
                                                 ),
                                                                                               IconButton(
-                                                  icon: const Icon(Icons.edit,size: 25,),
+                                                  icon: Icon(Icons.edit,size: 25,color: theTextColor,),
                                                   alignment: Alignment.bottomRight,
                                                     tooltip: "Change Avatar Background color",
                                                   onPressed: () {
@@ -394,7 +398,7 @@ Future<void> copyToClipboard(String input) async {
                                                 ),
 
                                               IconButton(
-                                                  icon: const Icon(Icons.edit,size: 25,),
+                                                  icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
                                                   alignment: Alignment.bottomRight,
                                                    tooltip: "Change Card Left Color",
                                                   onPressed: () {
@@ -434,7 +438,7 @@ Future<void> copyToClipboard(String input) async {
                                                 },
                                                 ),
                                               IconButton(
-                                                  icon: const Icon(Icons.edit,size: 25,),
+                                                  icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
                                                   alignment: Alignment.bottomRight,
                                                     tooltip: "Change Card Right Color",
                                                   onPressed: () {
@@ -474,7 +478,7 @@ Future<void> copyToClipboard(String input) async {
                                                 },
                                                 ),
                                                    IconButton(
-                                                  icon: const Icon(Icons.edit,size: 25,),
+                                                  icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
                                                   alignment: Alignment.bottomRight,
                                                     tooltip: "Change Details Left Color",
                                                   onPressed: () {
@@ -514,7 +518,7 @@ Future<void> copyToClipboard(String input) async {
                                                 },
                                                 ),
                                                               IconButton(
-                                                  icon: const Icon(Icons.edit,size: 25,),
+                                                  icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
                                                   alignment: Alignment.bottomRight,
                                                     tooltip: "Change Details Right Color",
                                                   onPressed: () {
@@ -554,7 +558,7 @@ Future<void> copyToClipboard(String input) async {
                                                 },
                                                 ),
                                                               IconButton(
-                                                  icon: const Icon(Icons.edit,size: 25,),
+                                                  icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
                                                   alignment: Alignment.bottomRight,
                                                   tooltip: "Change Details Speech Color",
                                                   onPressed: () {
@@ -594,7 +598,7 @@ Future<void> copyToClipboard(String input) async {
                                                 },
                                                 ),
                                                               IconButton(
-                                                  icon: const Icon(Icons.edit,size: 25,),
+                                                  icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
                                                   alignment: Alignment.bottomRight,
                                                   tooltip: "Change Details Defenition Color",
                                                   onPressed: () {
@@ -634,7 +638,7 @@ Future<void> copyToClipboard(String input) async {
                                                 },
                                                 ),
                                                               IconButton(
-                                                  icon: const Icon(Icons.edit,size: 25,),
+                                                  icon: Icon(Icons.edit,size: 25,color: theTextColor,),
                                                   alignment: Alignment.bottomRight,
                                                        tooltip: "Change Details Example Color",
 
@@ -674,14 +678,54 @@ Future<void> copyToClipboard(String input) async {
 
                                                 },
                                                 ),
-                                                
+                                                              IconButton(
+                                                  icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
+                                                  alignment: Alignment.bottomRight,
+                                                       tooltip: "Change Text Color",
+
+                                                  onPressed: () {
+                                                    // Navigate to the settings page. If the user leaves and returns
+                                                    // to the app after it has been killed while running in the
+                                                    // background, the navigation stack is restored.
+                                                    // Navigator.restorablePushNamed(context, SettingsView.routeName);
+                                                   
+
+                                                        showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext context) {
+                                                          return AlertDialog(
+                                                            titlePadding: const EdgeInsets.all(0.0),
+                                                            contentPadding: const EdgeInsets.all(0.0),
+                                                            content: SingleChildScrollView(
+                                                              child: ColorPicker(
+                                                                pickerColor: theTextColor,
+                                                                onColorChanged: changetheTextColor,
+                                                                colorPickerWidth: 300.0,
+                                                                pickerAreaHeightPercent: 0.7,
+                                                                enableAlpha: true,
+                                                                displayThumbColor: true,
+                                                                showLabel: true,
+                                                                paletteType: PaletteType.hsv,
+                                                                pickerAreaBorderRadius: const BorderRadius.only(
+                                                                  topLeft: const Radius.circular(2.0),
+                                                                  topRight: const Radius.circular(2.0),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          );
+                                                  },
+                                                );
+
+
+                                                },
+                                                ),
                                             ],
                                           ),
                                         ],
                                       ),
 
 
-                                    Card(_items[index]['word'],cardbackgroundLeft,cardbackgroundRight),
+                                    Card(_items[index]['word'],cardbackgroundLeft,cardbackgroundRight,theTextColor),
                                     // Text(_items[index]['meanings'][0]['def']),
                                     //  ..._items[index]['meanings'].map((value) {
                                     //   return CardDetails(def: value['def'],example: value['example']??"",speechPart: value['speech_part']??"",);
@@ -689,11 +733,11 @@ Future<void> copyToClipboard(String input) async {
                                    ...( _items[index]['meanings'].length<2)?
                                    
                                    _items[index]['meanings'].map((value) {
-                                      return CardDetails(def: value['def'],example: value['example']??"",speechPart: value['speech_part']??"",backgroundLeft: DetailsBackgroundLeft,backgroundRight: DetailsBackgroundRight,defColor: DetailsDefColor,exampleColor: DetailsExampleColor,speechColor: DetailsSpeechColor,);
+                                      return CardDetails(def: value['def'],example: value['example']??"",speechPart: value['speech_part']??"",backgroundLeft: DetailsBackgroundLeft,backgroundRight: DetailsBackgroundRight,defColor: DetailsDefColor,exampleColor: DetailsExampleColor,speechColor: DetailsSpeechColor,txtColor: theTextColor,);
                                     })
                                    
                                    :_items[index]['meanings'].sublist(0,2).map((value) {
-                                      return CardDetails(def: value['def'],example: value['example']??"",speechPart: value['speech_part']??"",backgroundLeft: DetailsBackgroundLeft,backgroundRight: DetailsBackgroundRight,defColor: DetailsDefColor,exampleColor: DetailsExampleColor,speechColor: DetailsSpeechColor);
+                                      return CardDetails(def: value['def'],example: value['example']??"",speechPart: value['speech_part']??"",backgroundLeft: DetailsBackgroundLeft,backgroundRight: DetailsBackgroundRight,defColor: DetailsDefColor,exampleColor: DetailsExampleColor,speechColor: DetailsSpeechColor,txtColor: theTextColor,);
                                     }),
 
                                   
@@ -719,7 +763,7 @@ Future<void> copyToClipboard(String input) async {
               child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                Container(child: Text('Loading words from A to Z',style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 26),),),
+                Text('Loading words from A to Z',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 26,color: theTextColor),),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(128,64,128,64),
                     child: LoadingIndicator(
@@ -748,7 +792,8 @@ class Card extends StatelessWidget {
   final String str;
   final Color backgroundLeft;
    final Color backgroundRight;
-  Card(this.str,this.backgroundLeft,this.backgroundRight);
+   final Color textColr;
+  Card(this.str,this.backgroundLeft,this.backgroundRight,this.textColr);
 
   @override
   Widget build(BuildContext context) {
@@ -771,7 +816,7 @@ class Card extends StatelessWidget {
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Center(child: Text(str,style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 32),)),
+              child: Center(child: Text(str,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 32,color:textColr),)),
             ),
           ),
           // Positioned(
@@ -813,7 +858,8 @@ class CardDetails extends StatelessWidget {
   final Color speechColor;
   final Color defColor;
   final Color exampleColor;
-  CardDetails({required this.def,required this.backgroundLeft,required this.backgroundRight,required this.speechColor,required this.defColor,required this.exampleColor,this.speechPart="",this.example=""});
+  final Color txtColor;
+  CardDetails({required this.def,required this.backgroundLeft,required this.backgroundRight,required this.speechColor,required this.defColor,required this.exampleColor,required this.txtColor,this.speechPart="",this.example=""});
 
   @override
   Widget build(BuildContext context) {
@@ -839,7 +885,7 @@ class CardDetails extends StatelessWidget {
             speechPart.isNotEmpty?
             Container( child: Padding(
               padding: const EdgeInsets.all(4.0),
-              child: speechPart.length==1? Text(speechPart[0].toUpperCase()):Text("${speechPart[0].toUpperCase()}${speechPart.substring(1)}"),
+              child: speechPart.length==1? Text(speechPart[0].toUpperCase(),style: TextStyle(color: txtColor),):Text("${speechPart[0].toUpperCase()}${speechPart.substring(1)}",style: TextStyle(color: txtColor),),
             ),
             color: speechColor,
               //     decoration: BoxDecoration(
@@ -852,9 +898,10 @@ class CardDetails extends StatelessWidget {
               // ),
               ):Container()),
             SizedBox(height: 5,),
-            Container( child: const Padding(
+            Container( 
+              child:  Padding(
               padding: EdgeInsets.all(4.0),
-              child: Text('Definition'),
+              child: Text('Definition',style: TextStyle(color: txtColor),),
             ),
             color: defColor,
             //  decoration: BoxDecoration(
@@ -869,12 +916,12 @@ class CardDetails extends StatelessWidget {
             def.isNotEmpty?  
             Container(child: Padding(
               padding: const EdgeInsets.all(4.0),
-              child: def.length==1?Text(def[0].toUpperCase()):Text("${def[0].toUpperCase()}${def.substring(1)}"),
+              child: def.length==1?Text(def[0].toUpperCase(),style: TextStyle(color: txtColor),):Text("${def[0].toUpperCase()}${def.substring(1)}",style: TextStyle(color: txtColor),),
             )):Container(),
             SizedBox(height: 5,),
-            if(example.isNotEmpty) Container(child: const Padding(
+            if(example.isNotEmpty) Container(child: Padding(
               padding: EdgeInsets.all(4.0),
-              child: Text('Example'),
+              child: Text('Example',style: TextStyle(color: txtColor),),
             ), 
             color: exampleColor,
             //  decoration: BoxDecoration(
@@ -889,7 +936,7 @@ class CardDetails extends StatelessWidget {
              if(example.isNotEmpty)
             Container(child: Padding(
               padding: const EdgeInsets.all(4.0),
-              child: example.length==1?Text(example[0].toUpperCase()): Text("${example[0].toUpperCase()}${example.substring(1)}"),
+              child: example.length==1?Text(example[0].toUpperCase(),style: TextStyle(color: txtColor),): Text("${example[0].toUpperCase()}${example.substring(1)}",style: TextStyle(color: txtColor),),
             )),
             
           ],),

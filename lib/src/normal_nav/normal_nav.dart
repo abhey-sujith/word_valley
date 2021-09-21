@@ -11,6 +11,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 import "dart:math";
 import 'package:fluttermoji/fluttermoji.dart';
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const List<Color> _kDefaultRainbowColors = const [
   Colors.red,
@@ -25,14 +26,20 @@ const List<Color> _kDefaultRainbowColors = const [
 class NormalNav extends StatefulWidget {
   const NormalNav({ Key? key }) : super(key: key);
 
-    static const routeName = '/';
+    static const routeName = '/normalnav';
 
   @override
   _NormalNavState createState() => _NormalNavState();
 }
 
 class _NormalNavState extends State<NormalNav> {
+  
     List _items = [];
+
+_setNavLocalStorage(value) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('navigation', value);
+}
   // Fetch content from the json file
   Future<void> readJson() async {
     final String a = await rootBundle.loadString('assets/data/a.json');
@@ -103,6 +110,7 @@ class _NormalNavState extends State<NormalNav> {
     readJson();
   }
 
+
   @override
   Widget build(BuildContext context) {
 
@@ -133,8 +141,9 @@ class _NormalNavState extends State<NormalNav> {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: GestureDetector(
-                                      onTap: () {
-                                         Navigator.restorablePushNamed(context, Home.routeName);
+                                      onTap: () async {
+                                        await _setNavLocalStorage(Home.routeName);
+                                         Navigator.restorablePushReplacementNamed(context, Home.routeName);
                                           },
                                       child: Container(height: 35,width: 35,decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10.0),
@@ -152,7 +161,7 @@ class _NormalNavState extends State<NormalNav> {
                                     ),
                                   ),
                                            IconButton(
-                                          icon: const Icon(Icons.refresh),
+                                          icon: const Icon(Icons.refresh,color: Colors.white,),
                                           tooltip: "Refresh The List",
                                           onPressed: () {
                                             // Navigate to the settings page. If the user leaves and returns
@@ -216,7 +225,7 @@ class _NormalNavState extends State<NormalNav> {
               child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                Container(child: Text('Loading words from A to Z',style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 26),),),
+                Container(child: Text('Loading words from A to Z',style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 26,color: Colors.white),),),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(128,64,128,64),
                     child: LoadingIndicator(
@@ -266,7 +275,7 @@ class Card extends StatelessWidget {
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Center(child: Text(str,style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 32),)),
+              child: Center(child: Text(str,style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 32,color: Colors.white),)),
             ),
           ),
           Positioned(
@@ -329,7 +338,7 @@ class CardDetails extends StatelessWidget {
             speechPart.isNotEmpty?
             Container( child: Padding(
               padding: const EdgeInsets.all(4.0),
-              child: speechPart.length==1? Text(speechPart[0].toUpperCase()):Text("${speechPart[0].toUpperCase()}${speechPart.substring(1)}"),
+              child: speechPart.length==1? Text(speechPart[0].toUpperCase(),style: TextStyle(color: Colors.white),):Text("${speechPart[0].toUpperCase()}${speechPart.substring(1)}",style: TextStyle(color: Colors.white),),
             ),
                   decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4.0),
@@ -342,7 +351,7 @@ class CardDetails extends StatelessWidget {
             SizedBox(height: 5,),
             Container( child: const Padding(
               padding: EdgeInsets.all(4.0),
-              child: Text('Definition'),
+              child: Text('Definition',style: TextStyle(color: Colors.white),),
             ),
              decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4.0),
@@ -355,12 +364,12 @@ class CardDetails extends StatelessWidget {
             def.isNotEmpty?  
             Container(child: Padding(
               padding: const EdgeInsets.all(4.0),
-              child: def.length==1?Text(def[0].toUpperCase()):Text("${def[0].toUpperCase()}${def.substring(1)}"),
+              child: def.length==1?Text(def[0].toUpperCase(),style: TextStyle(color: Colors.white),):Text("${def[0].toUpperCase()}${def.substring(1)}",style: TextStyle(color: Colors.white),),
             )):Container(),
             SizedBox(height: 5,),
             if(example.isNotEmpty) Container(child: const Padding(
               padding: EdgeInsets.all(4.0),
-              child: Text('Example'),
+              child: Text('Example',style: TextStyle(color: Colors.white),),
             ), 
              decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4.0),
@@ -372,7 +381,7 @@ class CardDetails extends StatelessWidget {
              if(example.isNotEmpty)
             Container(child: Padding(
               padding: const EdgeInsets.all(4.0),
-              child: example.length==1?Text(example[0].toUpperCase()): Text("${example[0].toUpperCase()}${example.substring(1)}"),
+              child: example.length==1?Text(example[0].toUpperCase(),style: TextStyle(color: Colors.white),): Text("${example[0].toUpperCase()}${example.substring(1)}",style: TextStyle(color: Colors.white),),
             )),
             
           ],),

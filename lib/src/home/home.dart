@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:synonym_valley/src/About/About.dart';
 import 'package:synonym_valley/src/colorcustomisation_nav/colorcustomisation_nav.dart';
 import 'package:synonym_valley/src/normal_nav/normal_nav.dart';
 import 'package:synonym_valley/src/settings/settings_view.dart';
 import 'package:fluttermoji/fluttermoji.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 class Home extends StatefulWidget {
   const Home({ Key? key }) : super(key: key);
 
-    static const routeName = '/normalnav';
+    static const routeName = '/';
 
   @override
   _HomeState createState() => _HomeState();
@@ -16,24 +17,29 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool _buttontoggle = false;
 
+_setNavLocalStorage(value) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('navigation', value);
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xff373737),
         appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('Home',style: TextStyle(color: Colors.white),),
         backgroundColor: Color(0xff373737),
-        // actions: [
-        //   IconButton(
-        //     icon: const Icon(Icons.settings),
-        //     onPressed: () {
-        //       // Navigate to the settings page. If the user leaves and returns
-        //       // to the app after it has been killed while running in the
-        //       // background, the navigation stack is restored.
-        //       Navigator.restorablePushNamed(context, SettingsView.routeName);
-        //     },
-        //   ),
-        // ],
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.info),
+            onPressed: () {
+              // Navigate to the settings page. If the user leaves and returns
+              // to the app after it has been killed while running in the
+              // background, the navigation stack is restored.
+              Navigator.restorablePushNamed(context, About.routeName);
+            },
+          ),
+        ],
       ),
         body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -49,13 +55,15 @@ class _HomeState extends State<Home> {
                   shrinkWrap: true,
                   children: <Widget>[
     GestureDetector(
-                onTap: () {
+                onTap: () async {
+                  await _setNavLocalStorage(NormalNav.routeName);
                     Navigator.restorablePushNamed(context, NormalNav.routeName);
                       },
       child: const View(title: 'Made For You',topColor: Color(0xfffb7a81),bottomColor:  Color(0xffffae94),shadowColor: Color(0xfff7d7dd))
     ),
     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
+                           await _setNavLocalStorage(ColorCustomisation.routeName);
     Navigator.restorablePushNamed(context, ColorCustomisation.routeName);
                       },
       child: const View2(title: 'Customise Colors',topColor: Color(0xff768aea),bottomColor:  Color(0xff595ddc),shadowColor: Color(0xffbfc0f5)),
@@ -68,7 +76,7 @@ class _HomeState extends State<Home> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: RaisedButton( child: Text("Customise Avatar"), onPressed: (){
+              child: RaisedButton(color: Color(0xfffc6895), child: Text("Customise Avatar",style: TextStyle(color: Colors.white),), onPressed: (){
               setState(() {
                 _buttontoggle = !_buttontoggle;
               });
