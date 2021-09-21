@@ -12,6 +12,7 @@ import "dart:math";
 import 'package:fluttermoji/fluttermoji.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 const List<Color> _kDefaultRainbowColors = const [
   Colors.red,
@@ -110,138 +111,207 @@ _setNavLocalStorage(value) async {
     readJson();
   }
 
+GlobalKey _one = GlobalKey();
+GlobalKey _two = GlobalKey();
+GlobalKey _three = GlobalKey();
+GlobalKey _four = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
 
     // final Stream<double> swipe;
     // StreamController<double> _controller = StreamController<double>();
-    return Scaffold(
-        backgroundColor: Colors.black,
-        body: (_items.length > 0
-            ? Container(
-                    width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child:SwipableStack(
+    return ShowCaseWidget(
+      builder: Builder(
+        builder: (context) {
+          executeAfterBuild(context);
+          return Scaffold(
+              backgroundColor: Colors.black,
+              body: (_items.length > 0
+                  ? Container(
+                          width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    child:SwipableStack(
 
-              itemCount: _items.length,
-                      builder: (context, index, constraints) {
-                        return Column(
-                          children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 100,
-                               decoration: const BoxDecoration(
-                                // borderRadius: BorderRadius.(16.0),
-                                color: Color(0xff282832),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    itemCount: _items.length,
+                            builder: (context, index, constraints) {
+                              return Column(
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: GestureDetector(
-                                      onTap: () async {
-                                        await _setNavLocalStorage(Home.routeName);
-                                         Navigator.restorablePushReplacementNamed(context, Home.routeName);
-                                          },
-                                      child: Container(height: 35,width: 35,decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      color: Colors.redAccent
-                                      // gradient: const LinearGradient(
-                                      //     begin: Alignment.topLeft,
-                                      //     end: Alignment.bottomRight,
-                                      //     colors: [Color(0xffffad42),Color(0xffef6c00), Color(0xffe65100)])
+                                  Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 100,
+                                     decoration: const BoxDecoration(
+                                      // borderRadius: BorderRadius.(16.0),
+                                      color: Color(0xff282832),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              await _setNavLocalStorage(Home.routeName);
+                                               Navigator.restorablePushReplacementNamed(context, Home.routeName);
+                                                },
+                                            child: index==0?Showcase(
+                                              key: _one,
+                                              title: 'Button',
+                                              description: 'Click here to goto Home Page',
+                                              child: Container(height: 35,width: 35,decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(10.0),
+                                              color: Colors.redAccent
+                                              // gradient: const LinearGradient(
+                                              //     begin: Alignment.topLeft,
+                                              //     end: Alignment.bottomRight,
+                                              //     colors: [Color(0xffffad42),Color(0xffef6c00), Color(0xffe65100)])
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(0.5),
+                                                  child: FluttermojiCircleAvatar(radius: 25,backgroundColor: Colors.white.withOpacity(0),),
+                                                ),
+                                                ),
+                                            ):Container(height: 35,width: 35,decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10.0),
+                                            color: Colors.redAccent
+                                            // gradient: const LinearGradient(
+                                            //     begin: Alignment.topLeft,
+                                            //     end: Alignment.bottomRight,
+                                            //     colors: [Color(0xffffad42),Color(0xffef6c00), Color(0xffe65100)])
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(0.5),
+                                                child: FluttermojiCircleAvatar(radius: 25,backgroundColor: Colors.white.withOpacity(0),),
+                                              ),
+                                              ),
+                                          ),
                                         ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(0.5),
-                                          child: FluttermojiCircleAvatar(radius: 25,backgroundColor: Colors.white.withOpacity(0),),
-                                        ),
-                                        ),
+                                                 index==0?Showcase(
+                                                  key: _two,
+                                                  title: 'Refresh',
+                                                  description: 'Click to refresh',
+                                                   child: IconButton(
+                                                  icon: const Icon(Icons.refresh,color: Colors.white,),
+                                                  tooltip: "Refresh The List",
+                                                  onPressed: () {
+                                                    // Navigate to the settings page. If the user leaves and returns
+                                                    // to the app after it has been killed while running in the
+                                                    // background, the navigation stack is restored.
+                                                    // Navigator.restorablePushNamed(context, SettingsView.routeName);
+                                                     setState(() {
+                                                        _items=[];
+                                                        Timer(Duration(seconds: 1), () => readJson());
+                                                      });
+                                                                                                 },
+                                                                                               ),
+                                                 ): IconButton(
+                                                icon: const Icon(Icons.refresh,color: Colors.white,),
+                                                tooltip: "Refresh The List",
+                                                onPressed: () {
+                                                  // Navigate to the settings page. If the user leaves and returns
+                                                  // to the app after it has been killed while running in the
+                                                  // background, the navigation stack is restored.
+                                                  // Navigator.restorablePushNamed(context, SettingsView.routeName);
+                                                   setState(() {
+                                                      _items=[];
+                                                      Timer(Duration(seconds: 1), () => readJson());
+                                                    });
+                                                },
+                                              ),
+                                      ],
                                     ),
                                   ),
-                                           IconButton(
-                                          icon: const Icon(Icons.refresh,color: Colors.white,),
-                                          tooltip: "Refresh The List",
-                                          onPressed: () {
-                                            // Navigate to the settings page. If the user leaves and returns
-                                            // to the app after it has been killed while running in the
-                                            // background, the navigation stack is restored.
-                                            // Navigator.restorablePushNamed(context, SettingsView.routeName);
-                                             setState(() {
-                                                _items=[];
-                                                Timer(Duration(seconds: 1), () => readJson());
-                                              });
-                                          },
-                                        ),
+                                  Expanded(
+                                    child: Container(
+                                     decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(16),bottomLeft: Radius.circular(16)),
+                                      color: Color(0xff282832),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          index==0?Showcase(
+                                          key: _three,
+                                          title: 'Card',
+                                          description: 'This is the word',
+                                            child: Card(_items[index]['word'])):Card(_items[index]['word']),
+                                          // Text(_items[index]['meanings'][0]['def']),
+                                          //  ..._items[index]['meanings'].map((value) {
+                                          //   return CardDetails(def: value['def'],example: value['example']??"",speechPart: value['speech_part']??"",);
+                                          // }),
+                                         ...( _items[index]['meanings'].length<2)?
+                                         
+                                         _items[index]['meanings'].map((value) {
+                                            return index==0?Showcase(
+                                              key: _four,
+                                              title: 'Card',
+                                              description: ' Lexical category, Definition and Example of the word',
+                                              child: CardDetails(def: value['def'],example: value['example']??"",speechPart: value['speech_part']??"",)):CardDetails(def: value['def'],example: value['example']??"",speechPart: value['speech_part']??"",);
+                                          })
+                                         
+                                         :_items[index]['meanings'].sublist(0,2).map((value) {
+                                            return index==0?Showcase(
+                                              key: _four,
+                                              title: 'Card',
+                                              description: ' Lexical category, Definition and Example of the word',
+                                              child: CardDetails(def: value['def'],example: value['example']??"",speechPart: value['speech_part']??"",)):CardDetails(def: value['def'],example: value['example']??"",speechPart: value['speech_part']??"",);
+                                          })
+                                        ],
+                                      ),
+                                    ),
+                                    ),
+                                  ),
                                 ],
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                               decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.only(bottomRight: Radius.circular(16),bottomLeft: Radius.circular(16)),
-                                color: Color(0xff282832),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Card(_items[index]['word']),
-                                    // Text(_items[index]['meanings'][0]['def']),
-                                    //  ..._items[index]['meanings'].map((value) {
-                                    //   return CardDetails(def: value['def'],example: value['example']??"",speechPart: value['speech_part']??"",);
-                                    // }),
-                                   ...( _items[index]['meanings'].length<2)?
-                                   
-                                   _items[index]['meanings'].map((value) {
-                                      return CardDetails(def: value['def'],example: value['example']??"",speechPart: value['speech_part']??"",);
-                                    })
-                                   
-                                   :_items[index]['meanings'].sublist(0,2).map((value) {
-                                      return CardDetails(def: value['def'],example: value['example']??"",speechPart: value['speech_part']??"",);
-                                    })
-                                  ],
-                                ),
-                              ),
-                              ),
-                            ),
-                          ],
-                        );
-                        // ),
-                      },
+                              );
+                              // ),
+                            },
+                          ),
+                  )
+                  : 
+                  Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                   decoration: const BoxDecoration(
+                                    // borderRadius: BorderRadius.(16.0),
+                                    color: Color(0xff282832),
+                                  ),
+                    child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                      Container(child: Text('Loading words from A to Z',style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 26,color: Colors.white),),),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(128,64,128,64),
+                          child: LoadingIndicator(
+                            indicatorType: getRandomElement([Indicator.ballPulse,Indicator.ballGridPulse,Indicator.ballClipRotate,Indicator.squareSpin,Indicator.ballClipRotatePulse,Indicator.ballClipRotateMultiple,Indicator.ballPulseRise,Indicator.ballRotate,Indicator.cubeTransition,Indicator.ballZigZag,Indicator.ballZigZagDeflect,Indicator.ballTrianglePath,Indicator.ballTrianglePathColored,Indicator.ballTrianglePathColoredFilled,Indicator.ballScale,Indicator.lineScale,Indicator.lineScaleParty,Indicator.ballScaleMultiple,Indicator.ballPulseSync,Indicator.ballBeat,Indicator.lineScalePulseOut,Indicator.lineScalePulseOutRapid,Indicator.ballScaleRipple,Indicator.ballScaleRippleMultiple,Indicator.ballSpinFadeLoader,Indicator.lineSpinFadeLoader,Indicator.triangleSkewSpin,Indicator.pacman,Indicator.ballGridBeat,Indicator.semiCircleSpin,Indicator.ballRotateChase,Indicator.orbit,Indicator.audioEqualizer,Indicator.circleStrokeSpin]),
+                            colors: _kDefaultRainbowColors,
+                            strokeWidth: 4.0,
+                            // pathBackgroundColor:
+                                // showPathBackground ? Colors.black45 : null,
+                          ),
+                        ),
+                      ],
                     ),
-            )
-            : 
-            Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-             decoration: const BoxDecoration(
-                              // borderRadius: BorderRadius.(16.0),
-                              color: Color(0xff282832),
-                            ),
-              child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                Container(child: Text('Loading words from A to Z',style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 26,color: Colors.white),),),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(128,64,128,64),
-                    child: LoadingIndicator(
-                      indicatorType: getRandomElement([Indicator.ballPulse,Indicator.ballGridPulse,Indicator.ballClipRotate,Indicator.squareSpin,Indicator.ballClipRotatePulse,Indicator.ballClipRotateMultiple,Indicator.ballPulseRise,Indicator.ballRotate,Indicator.cubeTransition,Indicator.ballZigZag,Indicator.ballZigZagDeflect,Indicator.ballTrianglePath,Indicator.ballTrianglePathColored,Indicator.ballTrianglePathColoredFilled,Indicator.ballScale,Indicator.lineScale,Indicator.lineScaleParty,Indicator.ballScaleMultiple,Indicator.ballPulseSync,Indicator.ballBeat,Indicator.lineScalePulseOut,Indicator.lineScalePulseOutRapid,Indicator.ballScaleRipple,Indicator.ballScaleRippleMultiple,Indicator.ballSpinFadeLoader,Indicator.lineSpinFadeLoader,Indicator.triangleSkewSpin,Indicator.pacman,Indicator.ballGridBeat,Indicator.semiCircleSpin,Indicator.ballRotateChase,Indicator.orbit,Indicator.audioEqualizer,Indicator.circleStrokeSpin]),
-                      colors: _kDefaultRainbowColors,
-                      strokeWidth: 4.0,
-                      // pathBackgroundColor:
-                          // showPathBackground ? Colors.black45 : null,
-                    ),
-                  ),
-                ],
-              ),
-            )
-            )
-      );
+                  )
+                  )
+            );
+        }
+      ),
+    );
   }
+    Future<void> executeAfterBuild(context) async {
+  // this code will get executed after the build method
+  // because of the way async functions are scheduled
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+   bool? seen = prefs.getBool('seennav');
+   if(seen!=true){
+   ShowCaseWidget.of(context)!.startShowCase([_one,_two,_three,_four]);
+   await prefs.setBool('seennav', true);
+   }     
+
+}
 }
 
 getRandomElement(List<Indicator> list) {

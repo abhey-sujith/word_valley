@@ -97,46 +97,6 @@
     {
         "meanings": [
             {
-                "speech_part": "phrase",
-                "labels": [
-                    {
-                        "name": "slang",
-                        "parent": {
-                            "name": "informal",
-                            "is_dialect": false
-                        },
-                        "is_dialect": false
-                    },
-                    {
-                        "name": "offensive",
-                        "parent": {
-                            "name": "informal",
-                            "is_dialect": false
-                        },
-                        "is_dialect": false
-                    }
-                ],
-                "id": "6e57ebbadb",
-                "def": "an abbreviated version of the phrase \"What the Fuck,\" usually used when someone does something that is extremely unusual, awe-striking in a negative connotation"
-            }
-        ],
-        "wordset_id": "9f194d8fae",
-        "word": "WTF",
-        "editors": [
-            "chriskacz23"
-        ],
-        "contributors": [
-            "msingle",
-            "hcatlin",
-            "sabreuse",
-            "bryanedu",
-            "zellerpress",
-            "lefurjah"
-        ]
-    },
-    {
-        "meanings": [
-            {
                 "speech_part": "noun",
                 "synonyms": [
                     "web"
@@ -4674,32 +4634,6 @@
             "zellerpress",
             "lefurjah"
         ]
-    },
-    {
-        "meanings": [
-            {
-                "speech_part": "noun",
-                "synonyms": [
-                    "jacking off"
-                ],
-                "id": "f8a822ba5c",
-                "def": "slang for masturbation"
-            },
-            {
-                "speech_part": "verb",
-                "synonyms": [
-                    "masturbate",
-                    "fuck off",
-                    "she-bop",
-                    "jack off",
-                    "jerk off"
-                ],
-                "id": "60100ae383",
-                "def": "get sexual gratification through self-stimulation"
-            }
-        ],
-        "wordset_id": "228e15944e",
-        "word": "wank"
     },
     {
         "meanings": [

@@ -14,6 +14,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttermoji/fluttermoji.dart';
 import 'dart:async';
+import 'package:showcaseview/showcaseview.dart';
 
 const List<Color> _kDefaultRainbowColors = const [
   Colors.red,
@@ -207,579 +208,648 @@ _setNavLocalStorage(value) async {
   }
 
 
+GlobalKey _one = GlobalKey();
+GlobalKey _two = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
 
     // final Stream<double> swipe;
     // StreamController<double> _controller = StreamController<double>();
-    return Scaffold(
-        backgroundColor: Colors.black,
-        body: (_items.length > 0
-            ? Container(
-                    width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child:SwipableStack(
+    return ShowCaseWidget(
+      builder: Builder(
+        builder: (context) {
+              executeAfterBuild(context);
+          return Scaffold(
+              backgroundColor: Colors.black,
+              body: (_items.length > 0
+                  ? Container(
+                            width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      child:SwipableStack(
 
-              itemCount: _items.length,
-                      builder: (context, index, constraints) {
-                        return Column(
-                          children: [
-                            Tooltip(
-                              message: "Double Tap To Refresh",
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: 100,
-                                 decoration:  BoxDecoration(
-                                  // borderRadius: BorderRadius.(16.0),
-                                  color: currentColor,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      itemCount: _items.length,
+                              builder: (context, index, constraints) {
+                                return Column(
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                          await _setNavLocalStorage(Home.routeName);
-                                           Navigator.restorablePushReplacementNamed(context, Home.routeName);
-                                            },
-                                            onDoubleTap: (){
-                                              setState(() {
-                                                _items=[];
-                                                Timer(Duration(seconds: 1), () => readJson());
+                                    Tooltip(
+                                      message: "Double Tap To Refresh",
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width,
+                                        height: 100,
+                                         decoration:  BoxDecoration(
+                                          // borderRadius: BorderRadius.(16.0),
+                                          color: currentColor,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: GestureDetector(
+                                                onTap: () async {
+                                                  await _setNavLocalStorage(Home.routeName);
+                                                   Navigator.restorablePushReplacementNamed(context, Home.routeName);
+                                                    },
+                                                    onDoubleTap: (){
+                                                      setState(() {
+                                                        _items=[];
+                                                        Timer(Duration(seconds: 1), () => readJson());
+                                                        
+                                                      });
+                                                    },
                                                 
-                                              });
-                                            },
-                                        
-                                        child: Container(height: 30,width: 30,decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10.0),
-                                        color: avatarBackgroundColor
-                                        // gradient: const LinearGradient(
-                                        //     begin: Alignment.topLeft,
-                                        //     end: Alignment.bottomRight,
-                                        //     colors: [Color(0xffffad42),Color(0xffef6c00), Color(0xffe65100)])
-                                                                        ),
-                                                                         child: Padding(
-                                                                           padding: const EdgeInsets.all(1.0),
-                                                                           child: FluttermojiCircleAvatar(radius: 25,backgroundColor: Colors.white.withOpacity(0),),
-                                                                         ),
-                                                                        ),
+                                                child: index ==0? Showcase(
+                                                  key: _one,
+                                                  title: 'Button',
+                                                  description: 'Click here to go to Home page',
+                                                  child: Container(height: 30,width: 30,decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(10.0),
+                                                  color: avatarBackgroundColor
+                                                  // gradient: const LinearGradient(
+                                                  //     begin: Alignment.topLeft,
+                                                  //     end: Alignment.bottomRight,
+                                                  //     colors: [Color(0xffffad42),Color(0xffef6c00), Color(0xffe65100)])
+                                                                                  ),
+                                                                                   child: Padding(
+                                                                                     padding: const EdgeInsets.all(1.0),
+                                                                                     child: FluttermojiCircleAvatar(radius: 25,backgroundColor: Colors.white.withOpacity(0),),
+                                                                                   ),
+                                                                                  ),
+                                                ):Container(height: 30,width: 30,decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(10.0),
+                                                color: avatarBackgroundColor
+                                                // gradient: const LinearGradient(
+                                                //     begin: Alignment.topLeft,
+                                                //     end: Alignment.bottomRight,
+                                                //     colors: [Color(0xffffad42),Color(0xffef6c00), Color(0xffe65100)])
+                                                                                ),
+                                                                                 child: Padding(
+                                                                                   padding: const EdgeInsets.all(1.0),
+                                                                                   child: FluttermojiCircleAvatar(radius: 25,backgroundColor: Colors.white.withOpacity(0),),
+                                                                                 ),
+                                                                                ),
+                                              ),
+                                            ),
+                                                     index==0? Showcase(
+                                                       key: _two,
+                                                      title: 'Edit button',
+                                                      description: 'Click to display buttons which can be used to change color, After editing click again to reload the page',
+                                                       child: IconButton(
+                                                    icon: Icon(Icons.edit,color: theTextColor,),
+                                                    tooltip: 'Press to open or close the edit color buttons',
+                                                    onPressed: () {
+                                                        final snackBar = SnackBar(content: Text('Press Again To Refresh And Scroll',style:TextStyle(color: Colors.black)),backgroundColor: Color(0xffffffff),);
+                                                        // Navigate to the settings page. If the user leaves and returns
+                                                        // to the app after it has been killed while running in the
+                                                        // background, the navigation stack is restored.
+                                                        // Navigator.restorablePushNamed(context, SettingsView.routeName);
+                                                         if(_edit){
+                                                           setState(() {
+                                                          _items=[];
+                                                          Timer(Duration(seconds: 1), () => readJson());
+                                                          
+                                                        });
+                                                        }
+                                                        if(!_edit){
+                                                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                        }
+                                                        setState(() {
+                                                          _edit=!_edit;
+            
+                                                        });
+                                                       
+                                    
+                                    
+                                                  },
+                                                  ),
+                                                     ):IconButton(
+                                                    icon: Icon(Icons.edit,color: theTextColor,),
+                                                    tooltip: 'Press to open or close the edit color buttons',
+                                                    onPressed: () {
+                                                      final snackBar = SnackBar(content: Text('Press Again To Refresh And Scroll',style:TextStyle(color: Colors.black)),backgroundColor: Color(0xffffffff),);
+                                                      // Navigate to the settings page. If the user leaves and returns
+                                                      // to the app after it has been killed while running in the
+                                                      // background, the navigation stack is restored.
+                                                      // Navigator.restorablePushNamed(context, SettingsView.routeName);
+                                                       if(_edit){
+                                                         setState(() {
+                                                        _items=[];
+                                                        Timer(Duration(seconds: 1), () => readJson());
+                                                        
+                                                      });
+                                                      }
+                                                      if(!_edit){
+                                                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                      }
+                                                      setState(() {
+                                                        _edit=!_edit;
+            
+                                                      });
+                                                     
+                                    
+                                    
+                                                  },
+                                                  )
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                             IconButton(
-                                            icon: Icon(Icons.edit,color: theTextColor,),
-                                            tooltip: 'Press to open or close the edit color buttons',
-                                            onPressed: () {
-                                              final snackBar = SnackBar(content: Text('Press Again To Refresh And Scroll',style:TextStyle(color: Colors.black)),backgroundColor: Color(0xffffffff),);
-                                              // Navigate to the settings page. If the user leaves and returns
-                                              // to the app after it has been killed while running in the
-                                              // background, the navigation stack is restored.
-                                              // Navigator.restorablePushNamed(context, SettingsView.routeName);
-                                               if(_edit){
-                                                 setState(() {
-                                                _items=[];
-                                                Timer(Duration(seconds: 1), () => readJson());
-                                                
-                                              });
-                                              }
-                                              if(!_edit){
-                                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                              }
-                                              setState(() {
-                                                _edit=!_edit;
-      
-                                              });
-                                             
-                            
-                            
-                                          },
-                                          )
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                               decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.only(bottomRight: Radius.circular(16),bottomLeft: Radius.circular(16)),
-                                color: currentColor,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-
-                                      if(_edit)    Column(
-                                        children: [
-                                          Text('Long Press Buttons To See Tooltip',style: TextStyle(color: theTextColor),),
-                                          Wrap(
-                                            children: [
-                                              IconButton(
-                                                  icon: Icon(Icons.edit,size: 25,color: theTextColor,),
-                                                  alignment: Alignment.bottomRight,
-                                                  tooltip: "Change background Color",
-                                                  onPressed: () {
-                                                    // Navigate to the settings page. If the user leaves and returns
-                                                    // to the app after it has been killed while running in the
-                                                    // background, the navigation stack is restored.
-                                                    // Navigator.restorablePushNamed(context, SettingsView.routeName);
-                                                   
-
-                                                        showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext context) {
-                                                          return AlertDialog(
-                                                            titlePadding: const EdgeInsets.all(0.0),
-                                                            contentPadding: const EdgeInsets.all(0.0),
-                                                            content: SingleChildScrollView(
-                                                              child: ColorPicker(
-                                                                pickerColor: currentColor,
-                                                                onColorChanged: changeColor,
-                                                                colorPickerWidth: 300.0,
-                                                                pickerAreaHeightPercent: 0.7,
-                                                                enableAlpha: true,
-                                                                displayThumbColor: true,
-                                                                showLabel: true,
-                                                                paletteType: PaletteType.hsv,
-                                                                pickerAreaBorderRadius: const BorderRadius.only(
-                                                                  topLeft: const Radius.circular(2.0),
-                                                                  topRight: const Radius.circular(2.0),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                  },
-                                                );
-
-
-                                                },
-                                                ),
-                                                                                              IconButton(
-                                                  icon: Icon(Icons.edit,size: 25,color: theTextColor,),
-                                                  alignment: Alignment.bottomRight,
-                                                    tooltip: "Change Avatar Background color",
-                                                  onPressed: () {
-                                                    // Navigate to the settings page. If the user leaves and returns
-                                                    // to the app after it has been killed while running in the
-                                                    // background, the navigation stack is restored.
-                                                    // Navigator.restorablePushNamed(context, SettingsView.routeName);
-                                                   
-
-                                                        showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext context) {
-                                                          return AlertDialog(
-                                                            titlePadding: const EdgeInsets.all(0.0),
-                                                            contentPadding: const EdgeInsets.all(0.0),
-                                                            content: SingleChildScrollView(
-                                                              child: ColorPicker(
-                                                                pickerColor: avatarBackgroundColor,
-                                                                onColorChanged: changeavatarBackgroundColor,
-                                                                colorPickerWidth: 300.0,
-                                                                pickerAreaHeightPercent: 0.7,
-                                                                enableAlpha: true,
-                                                                displayThumbColor: true,
-                                                                showLabel: true,
-                                                                paletteType: PaletteType.hsv,
-                                                                pickerAreaBorderRadius: const BorderRadius.only(
-                                                                  topLeft: const Radius.circular(2.0),
-                                                                  topRight: const Radius.circular(2.0),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                  },
-                                                );
-
-
-                                                },
-                                                ),
-
-                                              IconButton(
-                                                  icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
-                                                  alignment: Alignment.bottomRight,
-                                                   tooltip: "Change Card Left Color",
-                                                  onPressed: () {
-                                                    // Navigate to the settings page. If the user leaves and returns
-                                                    // to the app after it has been killed while running in the
-                                                    // background, the navigation stack is restored.
-                                                    // Navigator.restorablePushNamed(context, SettingsView.routeName);
-                                                   
-
-                                                        showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext context) {
-                                                          return AlertDialog(
-                                                            titlePadding: const EdgeInsets.all(0.0),
-                                                            contentPadding: const EdgeInsets.all(0.0),
-                                                            content: SingleChildScrollView(
-                                                              child: ColorPicker(
-                                                                pickerColor: cardbackgroundLeft,
-                                                                onColorChanged: changecardbackgroundLeft,
-                                                                colorPickerWidth: 300.0,
-                                                                pickerAreaHeightPercent: 0.7,
-                                                                enableAlpha: true,
-                                                                displayThumbColor: true,
-                                                                showLabel: true,
-                                                                paletteType: PaletteType.hsv,
-                                                                pickerAreaBorderRadius: const BorderRadius.only(
-                                                                  topLeft: const Radius.circular(2.0),
-                                                                  topRight: const Radius.circular(2.0),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                  },
-                                                );
-
-
-                                                },
-                                                ),
-                                              IconButton(
-                                                  icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
-                                                  alignment: Alignment.bottomRight,
-                                                    tooltip: "Change Card Right Color",
-                                                  onPressed: () {
-                                                    // Navigate to the settings page. If the user leaves and returns
-                                                    // to the app after it has been killed while running in the
-                                                    // background, the navigation stack is restored.
-                                                    // Navigator.restorablePushNamed(context, SettingsView.routeName);
-                                                   
-
-                                                        showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext context) {
-                                                          return AlertDialog(
-                                                            titlePadding: const EdgeInsets.all(0.0),
-                                                            contentPadding: const EdgeInsets.all(0.0),
-                                                            content: SingleChildScrollView(
-                                                              child: ColorPicker(
-                                                                pickerColor: cardbackgroundRight,
-                                                                onColorChanged: changecardbackgroundRight,
-                                                                colorPickerWidth: 300.0,
-                                                                pickerAreaHeightPercent: 0.7,
-                                                                enableAlpha: true,
-                                                                displayThumbColor: true,
-                                                                showLabel: true,
-                                                                paletteType: PaletteType.hsv,
-                                                                pickerAreaBorderRadius: const BorderRadius.only(
-                                                                  topLeft: const Radius.circular(2.0),
-                                                                  topRight: const Radius.circular(2.0),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                  },
-                                                );
-
-
-                                                },
-                                                ),
-                                                   IconButton(
-                                                  icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
-                                                  alignment: Alignment.bottomRight,
-                                                    tooltip: "Change Details Left Color",
-                                                  onPressed: () {
-                                                    // Navigate to the settings page. If the user leaves and returns
-                                                    // to the app after it has been killed while running in the
-                                                    // background, the navigation stack is restored.
-                                                    // Navigator.restorablePushNamed(context, SettingsView.routeName);
-                                                   
-
-                                                        showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext context) {
-                                                          return AlertDialog(
-                                                            titlePadding: const EdgeInsets.all(0.0),
-                                                            contentPadding: const EdgeInsets.all(0.0),
-                                                            content: SingleChildScrollView(
-                                                              child: ColorPicker(
-                                                                pickerColor: DetailsBackgroundLeft,
-                                                                onColorChanged: changeDetailsBackgroundLeft,
-                                                                colorPickerWidth: 300.0,
-                                                                pickerAreaHeightPercent: 0.7,
-                                                                enableAlpha: true,
-                                                                displayThumbColor: true,
-                                                                showLabel: true,
-                                                                paletteType: PaletteType.hsv,
-                                                                pickerAreaBorderRadius: const BorderRadius.only(
-                                                                  topLeft: const Radius.circular(2.0),
-                                                                  topRight: const Radius.circular(2.0),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                  },
-                                                );
-
-
-                                                },
-                                                ),
-                                                              IconButton(
-                                                  icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
-                                                  alignment: Alignment.bottomRight,
-                                                    tooltip: "Change Details Right Color",
-                                                  onPressed: () {
-                                                    // Navigate to the settings page. If the user leaves and returns
-                                                    // to the app after it has been killed while running in the
-                                                    // background, the navigation stack is restored.
-                                                    // Navigator.restorablePushNamed(context, SettingsView.routeName);
-                                                   
-
-                                                        showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext context) {
-                                                          return AlertDialog(
-                                                            titlePadding: const EdgeInsets.all(0.0),
-                                                            contentPadding: const EdgeInsets.all(0.0),
-                                                            content: SingleChildScrollView(
-                                                              child: ColorPicker(
-                                                                pickerColor: DetailsBackgroundRight,
-                                                                onColorChanged: changeDetailsBackgroundRight,
-                                                                colorPickerWidth: 300.0,
-                                                                pickerAreaHeightPercent: 0.7,
-                                                                enableAlpha: true,
-                                                                displayThumbColor: true,
-                                                                showLabel: true,
-                                                                paletteType: PaletteType.hsv,
-                                                                pickerAreaBorderRadius: const BorderRadius.only(
-                                                                  topLeft: const Radius.circular(2.0),
-                                                                  topRight: const Radius.circular(2.0),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                  },
-                                                );
-
-
-                                                },
-                                                ),
-                                                              IconButton(
-                                                  icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
-                                                  alignment: Alignment.bottomRight,
-                                                  tooltip: "Change Details Speech Color",
-                                                  onPressed: () {
-                                                    // Navigate to the settings page. If the user leaves and returns
-                                                    // to the app after it has been killed while running in the
-                                                    // background, the navigation stack is restored.
-                                                    // Navigator.restorablePushNamed(context, SettingsView.routeName);
-                                                   
-
-                                                        showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext context) {
-                                                          return AlertDialog(
-                                                            titlePadding: const EdgeInsets.all(0.0),
-                                                            contentPadding: const EdgeInsets.all(0.0),
-                                                            content: SingleChildScrollView(
-                                                              child: ColorPicker(
-                                                                pickerColor: DetailsSpeechColor,
-                                                                onColorChanged: changeDetailsSpeechColor,
-                                                                colorPickerWidth: 300.0,
-                                                                pickerAreaHeightPercent: 0.7,
-                                                                enableAlpha: true,
-                                                                displayThumbColor: true,
-                                                                showLabel: true,
-                                                                paletteType: PaletteType.hsv,
-                                                                pickerAreaBorderRadius: const BorderRadius.only(
-                                                                  topLeft: const Radius.circular(2.0),
-                                                                  topRight: const Radius.circular(2.0),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                  },
-                                                );
-
-
-                                                },
-                                                ),
-                                                              IconButton(
-                                                  icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
-                                                  alignment: Alignment.bottomRight,
-                                                  tooltip: "Change Details Defenition Color",
-                                                  onPressed: () {
-                                                    // Navigate to the settings page. If the user leaves and returns
-                                                    // to the app after it has been killed while running in the
-                                                    // background, the navigation stack is restored.
-                                                    // Navigator.restorablePushNamed(context, SettingsView.routeName);
-                                                   
-
-                                                        showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext context) {
-                                                          return AlertDialog(
-                                                            titlePadding: const EdgeInsets.all(0.0),
-                                                            contentPadding: const EdgeInsets.all(0.0),
-                                                            content: SingleChildScrollView(
-                                                              child: ColorPicker(
-                                                                pickerColor: DetailsDefColor,
-                                                                onColorChanged: changeDetailsDefColor,
-                                                                colorPickerWidth: 300.0,
-                                                                pickerAreaHeightPercent: 0.7,
-                                                                enableAlpha: true,
-                                                                displayThumbColor: true,
-                                                                showLabel: true,
-                                                                paletteType: PaletteType.hsv,
-                                                                pickerAreaBorderRadius: const BorderRadius.only(
-                                                                  topLeft: const Radius.circular(2.0),
-                                                                  topRight: const Radius.circular(2.0),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                  },
-                                                );
-
-
-                                                },
-                                                ),
-                                                              IconButton(
-                                                  icon: Icon(Icons.edit,size: 25,color: theTextColor,),
-                                                  alignment: Alignment.bottomRight,
-                                                       tooltip: "Change Details Example Color",
-
-                                                  onPressed: () {
-                                                    // Navigate to the settings page. If the user leaves and returns
-                                                    // to the app after it has been killed while running in the
-                                                    // background, the navigation stack is restored.
-                                                    // Navigator.restorablePushNamed(context, SettingsView.routeName);
-                                                   
-
-                                                        showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext context) {
-                                                          return AlertDialog(
-                                                            titlePadding: const EdgeInsets.all(0.0),
-                                                            contentPadding: const EdgeInsets.all(0.0),
-                                                            content: SingleChildScrollView(
-                                                              child: ColorPicker(
-                                                                pickerColor: DetailsExampleColor,
-                                                                onColorChanged: changeDetailsExampleColor,
-                                                                colorPickerWidth: 300.0,
-                                                                pickerAreaHeightPercent: 0.7,
-                                                                enableAlpha: true,
-                                                                displayThumbColor: true,
-                                                                showLabel: true,
-                                                                paletteType: PaletteType.hsv,
-                                                                pickerAreaBorderRadius: const BorderRadius.only(
-                                                                  topLeft: const Radius.circular(2.0),
-                                                                  topRight: const Radius.circular(2.0),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                  },
-                                                );
-
-
-                                                },
-                                                ),
-                                                              IconButton(
-                                                  icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
-                                                  alignment: Alignment.bottomRight,
-                                                       tooltip: "Change Text Color",
-
-                                                  onPressed: () {
-                                                    // Navigate to the settings page. If the user leaves and returns
-                                                    // to the app after it has been killed while running in the
-                                                    // background, the navigation stack is restored.
-                                                    // Navigator.restorablePushNamed(context, SettingsView.routeName);
-                                                   
-
-                                                        showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext context) {
-                                                          return AlertDialog(
-                                                            titlePadding: const EdgeInsets.all(0.0),
-                                                            contentPadding: const EdgeInsets.all(0.0),
-                                                            content: SingleChildScrollView(
-                                                              child: ColorPicker(
-                                                                pickerColor: theTextColor,
-                                                                onColorChanged: changetheTextColor,
-                                                                colorPickerWidth: 300.0,
-                                                                pickerAreaHeightPercent: 0.7,
-                                                                enableAlpha: true,
-                                                                displayThumbColor: true,
-                                                                showLabel: true,
-                                                                paletteType: PaletteType.hsv,
-                                                                pickerAreaBorderRadius: const BorderRadius.only(
-                                                                  topLeft: const Radius.circular(2.0),
-                                                                  topRight: const Radius.circular(2.0),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                  },
-                                                );
-
-
-                                                },
-                                                ),
-                                            ],
-                                          ),
-                                        ],
+                                    Expanded(
+                                      child: Container(
+                                       decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(16),bottomLeft: Radius.circular(16)),
+                                        color: currentColor,
                                       ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+
+                                              if(_edit)    Column(
+                                                children: [
+                                                  Text('Long Press Buttons To See Tooltip',style: TextStyle(color: theTextColor),),
+                                                  Wrap(
+                                                    children: [
+                                                      IconButton(
+                                                          icon: Icon(Icons.edit,size: 25,color: theTextColor,),
+                                                          alignment: Alignment.bottomRight,
+                                                          tooltip: "Change background Color",
+                                                          onPressed: () {
+                                                            // Navigate to the settings page. If the user leaves and returns
+                                                            // to the app after it has been killed while running in the
+                                                            // background, the navigation stack is restored.
+                                                            // Navigator.restorablePushNamed(context, SettingsView.routeName);
+                                                           
+
+                                                                showDialog(
+                                                                context: context,
+                                                                builder: (BuildContext context) {
+                                                                  return AlertDialog(
+                                                                    titlePadding: const EdgeInsets.all(0.0),
+                                                                    contentPadding: const EdgeInsets.all(0.0),
+                                                                    content: SingleChildScrollView(
+                                                                      child: ColorPicker(
+                                                                        pickerColor: currentColor,
+                                                                        onColorChanged: changeColor,
+                                                                        colorPickerWidth: 300.0,
+                                                                        pickerAreaHeightPercent: 0.7,
+                                                                        enableAlpha: true,
+                                                                        displayThumbColor: true,
+                                                                        showLabel: true,
+                                                                        paletteType: PaletteType.hsv,
+                                                                        pickerAreaBorderRadius: const BorderRadius.only(
+                                                                          topLeft: const Radius.circular(2.0),
+                                                                          topRight: const Radius.circular(2.0),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                          },
+                                                        );
 
 
-                                    Card(_items[index]['word'],cardbackgroundLeft,cardbackgroundRight,theTextColor),
-                                    // Text(_items[index]['meanings'][0]['def']),
-                                    //  ..._items[index]['meanings'].map((value) {
-                                    //   return CardDetails(def: value['def'],example: value['example']??"",speechPart: value['speech_part']??"",);
-                                    // }),
-                                   ...( _items[index]['meanings'].length<2)?
-                                   
-                                   _items[index]['meanings'].map((value) {
-                                      return CardDetails(def: value['def'],example: value['example']??"",speechPart: value['speech_part']??"",backgroundLeft: DetailsBackgroundLeft,backgroundRight: DetailsBackgroundRight,defColor: DetailsDefColor,exampleColor: DetailsExampleColor,speechColor: DetailsSpeechColor,txtColor: theTextColor,);
-                                    })
-                                   
-                                   :_items[index]['meanings'].sublist(0,2).map((value) {
-                                      return CardDetails(def: value['def'],example: value['example']??"",speechPart: value['speech_part']??"",backgroundLeft: DetailsBackgroundLeft,backgroundRight: DetailsBackgroundRight,defColor: DetailsDefColor,exampleColor: DetailsExampleColor,speechColor: DetailsSpeechColor,txtColor: theTextColor,);
-                                    }),
+                                                        },
+                                                        ),
+                                                                                                      IconButton(
+                                                          icon: Icon(Icons.edit,size: 25,color: theTextColor,),
+                                                          alignment: Alignment.bottomRight,
+                                                            tooltip: "Change Avatar Background color",
+                                                          onPressed: () {
+                                                            // Navigate to the settings page. If the user leaves and returns
+                                                            // to the app after it has been killed while running in the
+                                                            // background, the navigation stack is restored.
+                                                            // Navigator.restorablePushNamed(context, SettingsView.routeName);
+                                                           
 
-                                  
+                                                                showDialog(
+                                                                context: context,
+                                                                builder: (BuildContext context) {
+                                                                  return AlertDialog(
+                                                                    titlePadding: const EdgeInsets.all(0.0),
+                                                                    contentPadding: const EdgeInsets.all(0.0),
+                                                                    content: SingleChildScrollView(
+                                                                      child: ColorPicker(
+                                                                        pickerColor: avatarBackgroundColor,
+                                                                        onColorChanged: changeavatarBackgroundColor,
+                                                                        colorPickerWidth: 300.0,
+                                                                        pickerAreaHeightPercent: 0.7,
+                                                                        enableAlpha: true,
+                                                                        displayThumbColor: true,
+                                                                        showLabel: true,
+                                                                        paletteType: PaletteType.hsv,
+                                                                        pickerAreaBorderRadius: const BorderRadius.only(
+                                                                          topLeft: const Radius.circular(2.0),
+                                                                          topRight: const Radius.circular(2.0),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                          },
+                                                        );
+
+
+                                                        },
+                                                        ),
+
+                                                      IconButton(
+                                                          icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
+                                                          alignment: Alignment.bottomRight,
+                                                           tooltip: "Change Card Left Color",
+                                                          onPressed: () {
+                                                            // Navigate to the settings page. If the user leaves and returns
+                                                            // to the app after it has been killed while running in the
+                                                            // background, the navigation stack is restored.
+                                                            // Navigator.restorablePushNamed(context, SettingsView.routeName);
+                                                           
+
+                                                                showDialog(
+                                                                context: context,
+                                                                builder: (BuildContext context) {
+                                                                  return AlertDialog(
+                                                                    titlePadding: const EdgeInsets.all(0.0),
+                                                                    contentPadding: const EdgeInsets.all(0.0),
+                                                                    content: SingleChildScrollView(
+                                                                      child: ColorPicker(
+                                                                        pickerColor: cardbackgroundLeft,
+                                                                        onColorChanged: changecardbackgroundLeft,
+                                                                        colorPickerWidth: 300.0,
+                                                                        pickerAreaHeightPercent: 0.7,
+                                                                        enableAlpha: true,
+                                                                        displayThumbColor: true,
+                                                                        showLabel: true,
+                                                                        paletteType: PaletteType.hsv,
+                                                                        pickerAreaBorderRadius: const BorderRadius.only(
+                                                                          topLeft: const Radius.circular(2.0),
+                                                                          topRight: const Radius.circular(2.0),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                          },
+                                                        );
+
+
+                                                        },
+                                                        ),
+                                                      IconButton(
+                                                          icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
+                                                          alignment: Alignment.bottomRight,
+                                                            tooltip: "Change Card Right Color",
+                                                          onPressed: () {
+                                                            // Navigate to the settings page. If the user leaves and returns
+                                                            // to the app after it has been killed while running in the
+                                                            // background, the navigation stack is restored.
+                                                            // Navigator.restorablePushNamed(context, SettingsView.routeName);
+                                                           
+
+                                                                showDialog(
+                                                                context: context,
+                                                                builder: (BuildContext context) {
+                                                                  return AlertDialog(
+                                                                    titlePadding: const EdgeInsets.all(0.0),
+                                                                    contentPadding: const EdgeInsets.all(0.0),
+                                                                    content: SingleChildScrollView(
+                                                                      child: ColorPicker(
+                                                                        pickerColor: cardbackgroundRight,
+                                                                        onColorChanged: changecardbackgroundRight,
+                                                                        colorPickerWidth: 300.0,
+                                                                        pickerAreaHeightPercent: 0.7,
+                                                                        enableAlpha: true,
+                                                                        displayThumbColor: true,
+                                                                        showLabel: true,
+                                                                        paletteType: PaletteType.hsv,
+                                                                        pickerAreaBorderRadius: const BorderRadius.only(
+                                                                          topLeft: const Radius.circular(2.0),
+                                                                          topRight: const Radius.circular(2.0),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                          },
+                                                        );
+
+
+                                                        },
+                                                        ),
+                                                           IconButton(
+                                                          icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
+                                                          alignment: Alignment.bottomRight,
+                                                            tooltip: "Change Details Left Color",
+                                                          onPressed: () {
+                                                            // Navigate to the settings page. If the user leaves and returns
+                                                            // to the app after it has been killed while running in the
+                                                            // background, the navigation stack is restored.
+                                                            // Navigator.restorablePushNamed(context, SettingsView.routeName);
+                                                           
+
+                                                                showDialog(
+                                                                context: context,
+                                                                builder: (BuildContext context) {
+                                                                  return AlertDialog(
+                                                                    titlePadding: const EdgeInsets.all(0.0),
+                                                                    contentPadding: const EdgeInsets.all(0.0),
+                                                                    content: SingleChildScrollView(
+                                                                      child: ColorPicker(
+                                                                        pickerColor: DetailsBackgroundLeft,
+                                                                        onColorChanged: changeDetailsBackgroundLeft,
+                                                                        colorPickerWidth: 300.0,
+                                                                        pickerAreaHeightPercent: 0.7,
+                                                                        enableAlpha: true,
+                                                                        displayThumbColor: true,
+                                                                        showLabel: true,
+                                                                        paletteType: PaletteType.hsv,
+                                                                        pickerAreaBorderRadius: const BorderRadius.only(
+                                                                          topLeft: const Radius.circular(2.0),
+                                                                          topRight: const Radius.circular(2.0),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                          },
+                                                        );
+
+
+                                                        },
+                                                        ),
+                                                                      IconButton(
+                                                          icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
+                                                          alignment: Alignment.bottomRight,
+                                                            tooltip: "Change Details Right Color",
+                                                          onPressed: () {
+                                                            // Navigate to the settings page. If the user leaves and returns
+                                                            // to the app after it has been killed while running in the
+                                                            // background, the navigation stack is restored.
+                                                            // Navigator.restorablePushNamed(context, SettingsView.routeName);
+                                                           
+
+                                                                showDialog(
+                                                                context: context,
+                                                                builder: (BuildContext context) {
+                                                                  return AlertDialog(
+                                                                    titlePadding: const EdgeInsets.all(0.0),
+                                                                    contentPadding: const EdgeInsets.all(0.0),
+                                                                    content: SingleChildScrollView(
+                                                                      child: ColorPicker(
+                                                                        pickerColor: DetailsBackgroundRight,
+                                                                        onColorChanged: changeDetailsBackgroundRight,
+                                                                        colorPickerWidth: 300.0,
+                                                                        pickerAreaHeightPercent: 0.7,
+                                                                        enableAlpha: true,
+                                                                        displayThumbColor: true,
+                                                                        showLabel: true,
+                                                                        paletteType: PaletteType.hsv,
+                                                                        pickerAreaBorderRadius: const BorderRadius.only(
+                                                                          topLeft: const Radius.circular(2.0),
+                                                                          topRight: const Radius.circular(2.0),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                          },
+                                                        );
+
+
+                                                        },
+                                                        ),
+                                                                      IconButton(
+                                                          icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
+                                                          alignment: Alignment.bottomRight,
+                                                          tooltip: "Change Details Speech Color",
+                                                          onPressed: () {
+                                                            // Navigate to the settings page. If the user leaves and returns
+                                                            // to the app after it has been killed while running in the
+                                                            // background, the navigation stack is restored.
+                                                            // Navigator.restorablePushNamed(context, SettingsView.routeName);
+                                                           
+
+                                                                showDialog(
+                                                                context: context,
+                                                                builder: (BuildContext context) {
+                                                                  return AlertDialog(
+                                                                    titlePadding: const EdgeInsets.all(0.0),
+                                                                    contentPadding: const EdgeInsets.all(0.0),
+                                                                    content: SingleChildScrollView(
+                                                                      child: ColorPicker(
+                                                                        pickerColor: DetailsSpeechColor,
+                                                                        onColorChanged: changeDetailsSpeechColor,
+                                                                        colorPickerWidth: 300.0,
+                                                                        pickerAreaHeightPercent: 0.7,
+                                                                        enableAlpha: true,
+                                                                        displayThumbColor: true,
+                                                                        showLabel: true,
+                                                                        paletteType: PaletteType.hsv,
+                                                                        pickerAreaBorderRadius: const BorderRadius.only(
+                                                                          topLeft: const Radius.circular(2.0),
+                                                                          topRight: const Radius.circular(2.0),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                          },
+                                                        );
+
+
+                                                        },
+                                                        ),
+                                                                      IconButton(
+                                                          icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
+                                                          alignment: Alignment.bottomRight,
+                                                          tooltip: "Change Details Defenition Color",
+                                                          onPressed: () {
+                                                            // Navigate to the settings page. If the user leaves and returns
+                                                            // to the app after it has been killed while running in the
+                                                            // background, the navigation stack is restored.
+                                                            // Navigator.restorablePushNamed(context, SettingsView.routeName);
+                                                           
+
+                                                                showDialog(
+                                                                context: context,
+                                                                builder: (BuildContext context) {
+                                                                  return AlertDialog(
+                                                                    titlePadding: const EdgeInsets.all(0.0),
+                                                                    contentPadding: const EdgeInsets.all(0.0),
+                                                                    content: SingleChildScrollView(
+                                                                      child: ColorPicker(
+                                                                        pickerColor: DetailsDefColor,
+                                                                        onColorChanged: changeDetailsDefColor,
+                                                                        colorPickerWidth: 300.0,
+                                                                        pickerAreaHeightPercent: 0.7,
+                                                                        enableAlpha: true,
+                                                                        displayThumbColor: true,
+                                                                        showLabel: true,
+                                                                        paletteType: PaletteType.hsv,
+                                                                        pickerAreaBorderRadius: const BorderRadius.only(
+                                                                          topLeft: const Radius.circular(2.0),
+                                                                          topRight: const Radius.circular(2.0),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                          },
+                                                        );
+
+
+                                                        },
+                                                        ),
+                                                                      IconButton(
+                                                          icon: Icon(Icons.edit,size: 25,color: theTextColor,),
+                                                          alignment: Alignment.bottomRight,
+                                                               tooltip: "Change Details Example Color",
+
+                                                          onPressed: () {
+                                                            // Navigate to the settings page. If the user leaves and returns
+                                                            // to the app after it has been killed while running in the
+                                                            // background, the navigation stack is restored.
+                                                            // Navigator.restorablePushNamed(context, SettingsView.routeName);
+                                                           
+
+                                                                showDialog(
+                                                                context: context,
+                                                                builder: (BuildContext context) {
+                                                                  return AlertDialog(
+                                                                    titlePadding: const EdgeInsets.all(0.0),
+                                                                    contentPadding: const EdgeInsets.all(0.0),
+                                                                    content: SingleChildScrollView(
+                                                                      child: ColorPicker(
+                                                                        pickerColor: DetailsExampleColor,
+                                                                        onColorChanged: changeDetailsExampleColor,
+                                                                        colorPickerWidth: 300.0,
+                                                                        pickerAreaHeightPercent: 0.7,
+                                                                        enableAlpha: true,
+                                                                        displayThumbColor: true,
+                                                                        showLabel: true,
+                                                                        paletteType: PaletteType.hsv,
+                                                                        pickerAreaBorderRadius: const BorderRadius.only(
+                                                                          topLeft: const Radius.circular(2.0),
+                                                                          topRight: const Radius.circular(2.0),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                          },
+                                                        );
+
+
+                                                        },
+                                                        ),
+                                                                      IconButton(
+                                                          icon:  Icon(Icons.edit,size: 25,color: theTextColor,),
+                                                          alignment: Alignment.bottomRight,
+                                                               tooltip: "Change Text Color",
+
+                                                          onPressed: () {
+                                                            // Navigate to the settings page. If the user leaves and returns
+                                                            // to the app after it has been killed while running in the
+                                                            // background, the navigation stack is restored.
+                                                            // Navigator.restorablePushNamed(context, SettingsView.routeName);
+                                                           
+
+                                                                showDialog(
+                                                                context: context,
+                                                                builder: (BuildContext context) {
+                                                                  return AlertDialog(
+                                                                    titlePadding: const EdgeInsets.all(0.0),
+                                                                    contentPadding: const EdgeInsets.all(0.0),
+                                                                    content: SingleChildScrollView(
+                                                                      child: ColorPicker(
+                                                                        pickerColor: theTextColor,
+                                                                        onColorChanged: changetheTextColor,
+                                                                        colorPickerWidth: 300.0,
+                                                                        pickerAreaHeightPercent: 0.7,
+                                                                        enableAlpha: true,
+                                                                        displayThumbColor: true,
+                                                                        showLabel: true,
+                                                                        paletteType: PaletteType.hsv,
+                                                                        pickerAreaBorderRadius: const BorderRadius.only(
+                                                                          topLeft: const Radius.circular(2.0),
+                                                                          topRight: const Radius.circular(2.0),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                          },
+                                                        );
+
+
+                                                        },
+                                                        ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+
+
+                                            Card(_items[index]['word'],cardbackgroundLeft,cardbackgroundRight,theTextColor),
+                                            // Text(_items[index]['meanings'][0]['def']),
+                                            //  ..._items[index]['meanings'].map((value) {
+                                            //   return CardDetails(def: value['def'],example: value['example']??"",speechPart: value['speech_part']??"",);
+                                            // }),
+                                           ...( _items[index]['meanings'].length<2)?
+                                           
+                                           _items[index]['meanings'].map((value) {
+                                              return CardDetails(def: value['def'],example: value['example']??"",speechPart: value['speech_part']??"",backgroundLeft: DetailsBackgroundLeft,backgroundRight: DetailsBackgroundRight,defColor: DetailsDefColor,exampleColor: DetailsExampleColor,speechColor: DetailsSpeechColor,txtColor: theTextColor,);
+                                            })
+                                           
+                                           :_items[index]['meanings'].sublist(0,2).map((value) {
+                                              return CardDetails(def: value['def'],example: value['example']??"",speechPart: value['speech_part']??"",backgroundLeft: DetailsBackgroundLeft,backgroundRight: DetailsBackgroundRight,defColor: DetailsDefColor,exampleColor: DetailsExampleColor,speechColor: DetailsSpeechColor,txtColor: theTextColor,);
+                                            }),
+
+                                          
+                                          ],
+                                        ),
+                                      ),
+                                      ),
+                                    ),
                                   ],
-                                ),
-                              ),
-                              ),
+                                );
+                                // ),
+                              },
                             ),
-                          ],
-                        );
-                        // ),
-                      },
+                    )
+                  : 
+                  Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                   decoration: const BoxDecoration(
+                                    // borderRadius: BorderRadius.(16.0),
+                                    color: Color(0xff282832),
+                                  ),
+                    child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                      Text('Loading words from A to Z',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 26,color: theTextColor),),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(128,64,128,64),
+                          child: LoadingIndicator(
+                            indicatorType: getRandomElement([Indicator.ballPulse,Indicator.ballGridPulse,Indicator.ballClipRotate,Indicator.squareSpin,Indicator.ballClipRotatePulse,Indicator.ballClipRotateMultiple,Indicator.ballPulseRise,Indicator.ballRotate,Indicator.cubeTransition,Indicator.ballZigZag,Indicator.ballZigZagDeflect,Indicator.ballTrianglePath,Indicator.ballTrianglePathColored,Indicator.ballTrianglePathColoredFilled,Indicator.ballScale,Indicator.lineScale,Indicator.lineScaleParty,Indicator.ballScaleMultiple,Indicator.ballPulseSync,Indicator.ballBeat,Indicator.lineScalePulseOut,Indicator.lineScalePulseOutRapid,Indicator.ballScaleRipple,Indicator.ballScaleRippleMultiple,Indicator.ballSpinFadeLoader,Indicator.lineSpinFadeLoader,Indicator.triangleSkewSpin,Indicator.pacman,Indicator.ballGridBeat,Indicator.semiCircleSpin,Indicator.ballRotateChase,Indicator.orbit,Indicator.audioEqualizer,Indicator.circleStrokeSpin]),
+                            colors: _kDefaultRainbowColors,
+                            strokeWidth: 4.0,
+                            // pathBackgroundColor:
+                                // showPathBackground ? Colors.black45 : null,
+                          ),
+                        ),
+                      ],
                     ),
-            )
-            : 
-            Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-             decoration: const BoxDecoration(
-                              // borderRadius: BorderRadius.(16.0),
-                              color: Color(0xff282832),
-                            ),
-              child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                Text('Loading words from A to Z',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 26,color: theTextColor),),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(128,64,128,64),
-                    child: LoadingIndicator(
-                      indicatorType: getRandomElement([Indicator.ballPulse,Indicator.ballGridPulse,Indicator.ballClipRotate,Indicator.squareSpin,Indicator.ballClipRotatePulse,Indicator.ballClipRotateMultiple,Indicator.ballPulseRise,Indicator.ballRotate,Indicator.cubeTransition,Indicator.ballZigZag,Indicator.ballZigZagDeflect,Indicator.ballTrianglePath,Indicator.ballTrianglePathColored,Indicator.ballTrianglePathColoredFilled,Indicator.ballScale,Indicator.lineScale,Indicator.lineScaleParty,Indicator.ballScaleMultiple,Indicator.ballPulseSync,Indicator.ballBeat,Indicator.lineScalePulseOut,Indicator.lineScalePulseOutRapid,Indicator.ballScaleRipple,Indicator.ballScaleRippleMultiple,Indicator.ballSpinFadeLoader,Indicator.lineSpinFadeLoader,Indicator.triangleSkewSpin,Indicator.pacman,Indicator.ballGridBeat,Indicator.semiCircleSpin,Indicator.ballRotateChase,Indicator.orbit,Indicator.audioEqualizer,Indicator.circleStrokeSpin]),
-                      colors: _kDefaultRainbowColors,
-                      strokeWidth: 4.0,
-                      // pathBackgroundColor:
-                          // showPathBackground ? Colors.black45 : null,
-                    ),
-                  ),
-                ],
-              ),
-            )
-            )
-      );
+                  )
+                  ),);
+        },
+      ),
+    );
   }
+  Future<void> executeAfterBuild(context) async {
+  // this code will get executed after the build method
+  // because of the way async functions are scheduled
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+   bool? seen = prefs.getBool('seen');
+   if(seen!=true){
+   ShowCaseWidget.of(context)!.startShowCase([_one,_two]);
+   await prefs.setBool('seen', true);
+   }     
+
+}
 }
 
 getRandomElement(List<Indicator> list) {

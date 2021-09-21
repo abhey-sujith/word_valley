@@ -6293,15 +6293,6 @@
                 "id": "56a6a1d33c",
                 "def": "resembling flame in brilliance or color",
                 "example": "maple trees ablaze in autumn"
-            },
-            {
-                "speech_part": "adjective",
-                "synonyms": [
-                    "aroused"
-                ],
-                "id": "0ff807142b",
-                "def": "keenly excited, especially sexually, or indicating excitement",
-                "example": "Their face was ablaze with excitement."
             }
         ],
         "wordset_id": "68def8d9d7",
@@ -12761,22 +12752,6 @@
                 "id": "d4c9f8a112",
                 "def": "to consider or hold as true",
                 "example": "I cannot accept the dogma of this church."
-            },
-            {
-                "speech_part": "verb",
-                "labels": [
-                    {
-                        "name": "transitive verb",
-                        "is_dialect": false
-                    },
-                    {
-                        "name": "intransitive verb",
-                        "is_dialect": false
-                    }
-                ],
-                "id": "f7e1474fd5",
-                "def": "to be sexually responsive to, used of a female domesticated mammal",
-                "example": "The cow accepted the bull."
             },
             {
                 "speech_part": "verb",
