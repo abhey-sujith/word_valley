@@ -1,0 +1,6 @@
+{
+  "appTitle": "synonym_valley",
+  "@appTitle": {
+    "description": "The title of the application"
+  }
+}
