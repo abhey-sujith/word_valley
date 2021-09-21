@@ -260,7 +260,7 @@ GlobalKey _two = GlobalKey();
                                                     },
                                                 
                                                 child: index ==0? Showcase(
-                                                  key: _one,
+                                                  key: _two,
                                                   title: 'Button',
                                                   description: 'Click here to go to Home page',
                                                   child: Container(height: 30,width: 30,decoration: BoxDecoration(
@@ -292,7 +292,7 @@ GlobalKey _two = GlobalKey();
                                               ),
                                             ),
                                                      index==0? Showcase(
-                                                       key: _two,
+                                                       key: _one,
                                                       title: 'Edit button',
                                                       description: 'Click to display buttons which can be used to change color, After editing click again to reload the page',
                                                        child: IconButton(
